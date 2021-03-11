@@ -1,3 +1,4 @@
+using EasyCaching.Interceptor.AspectCore;
 using Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -67,7 +68,11 @@ namespace OdhApiCore
 
             services.AddMemoryCache();
 
-            services.AddResponseCaching();
+            //services.AddResponseCaching();
+            services.AddEasyCaching(options =>
+            {
+                options.UseInMemory("m1");
+            });
 
             services.AddHttpClient("mss", client =>
             {
@@ -294,7 +299,9 @@ namespace OdhApiCore
             });
 
             //services.AddHttpContextAccessor();
-
+            services.ConfigureAspectCoreInterceptor(options => {
+                options.CacheProviderName = "m1";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -338,7 +345,7 @@ namespace OdhApiCore
             //Important! Register Cors Policz before Using Authentication and Authorization
             app.UseCors("CorsPolicy");
 
-            app.UseResponseCaching();
+            //app.UseResponseCaching();
 
             app.UseAuthentication();
             app.UseAuthorization();

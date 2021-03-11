@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using SqlKata.Execution;
 using OdhApiCore.Filters;
 using Microsoft.Extensions.Caching.Memory;
+using EasyCaching.Core.Interceptor;
 
 namespace OdhApiCore.Controllers.api
 {
@@ -87,20 +88,21 @@ namespace OdhApiCore.Controllers.api
         #region CacheTestController
 
         // Cache for 100 seconds on the server, inform the client that response is valid for 100 seconds
-        [ResponseCache(Duration = 100)]
-        [HttpGet, Route("Cached100")]
+        //[ResponseCache(Duration = 100)]
+        [HttpGet, Route("Cached100"), EasyCachingAble(Expiration = 100)]
         public IEnumerable<string> GetCached100()
         {
-            // TODO: generate a key from the request informations
-            var key = "GetCached100";
-            if (!cache.TryGetValue(key, out IEnumerable<string> cacheEntry))
-            {
-                cacheEntry = new string[] { "value1", "value2", DateTime.Now.ToLongTimeString() };
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromSeconds(100));
-                cache.Set(key, cacheEntry, cacheEntryOptions);
-            }
-            return cacheEntry;
+            //// TODO: generate a key from the request informations
+            //var key = "GetCached100";
+            //if (!cache.TryGetValue(key, out IEnumerable<string> cacheEntry))
+            //{
+            //    cacheEntry = new string[] { "value1", "value2", DateTime.Now.ToLongTimeString() };
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetSlidingExpiration(TimeSpan.FromSeconds(100));
+            //    cache.Set(key, cacheEntry, cacheEntryOptions);
+            //}
+            //return cacheEntry;
+            return new string[] { "value1", "value2", DateTime.Now.ToLongTimeString() };
         }
 
         // Cache for 100 seconds on the server, inform the client that response is valid for 100 seconds. Cache for anonymous users only.

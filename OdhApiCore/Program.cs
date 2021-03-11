@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using AspectCore.Extensions.Hosting;
 using System.Threading.Tasks;
 
 namespace OdhApiCore
@@ -20,7 +21,10 @@ namespace OdhApiCore
                 //    config.AddEnvironmentVariables();
                 //})
                 .ConfigureWebHostDefaults(webBuilder =>
-                    webBuilder.UseStartup<Startup>());
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .UseServiceContext();
         }
     }
 }
