@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using SqlKata.Execution;
 using OdhApiCore.Filters;
-using AspNetCore.CacheOutput;
 using System.IO;
 
 namespace OdhApiCore.Controllers.api
@@ -32,7 +31,7 @@ namespace OdhApiCore.Controllers.api
             this.settings = settings;
         }
 
-        [CacheOutput(ClientTimeSpan = 14400, ServerTimeSpan = 14400)]
+        //[CacheOutput(ClientTimeSpan = 14400, ServerTimeSpan = 14400)]
         [HttpGet, Route("v1/STA/ODHActivityPoi")]
         public async Task<IActionResult> GetODHActivityPoiListSTA(
             string language,
@@ -55,7 +54,7 @@ namespace OdhApiCore.Controllers.api
             }
         }
 
-        [CacheOutput(ClientTimeSpan = 14400, ServerTimeSpan = 14400)]
+        //[CacheOutput(ClientTimeSpan = 14400, ServerTimeSpan = 14400)]
         [HttpGet, Route("v1/STA/Accommodation")]
         public async Task<IActionResult> GetAccommodationsSTA(
            string language,

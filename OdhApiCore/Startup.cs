@@ -1,5 +1,3 @@
-using AspNetCore.CacheOutput.Extensions;
-using AspNetCore.CacheOutput.InMemory.Extensions;
 using Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,6 +34,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OdhApiCore
 {
@@ -66,6 +65,10 @@ namespace OdhApiCore
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddMemoryCache();
+
+            services.AddResponseCaching();
+
             services.AddHttpClient("mss", client =>
             {
                 //client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate");
@@ -74,8 +77,6 @@ namespace OdhApiCore
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
             services.AddHttpClient("lcs"); // TODO: put LCS config here
-
-            services.AddInMemoryCacheOutput();
 
             services.AddLogging(options =>
             {
@@ -330,7 +331,7 @@ namespace OdhApiCore
                 //FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "wwwroot")), RequestPath = "/StaticFiles" 
             });
 
-            app.UseCacheOutput();
+            app.UseResponseCaching();
 
             app.UseRouting();
 
