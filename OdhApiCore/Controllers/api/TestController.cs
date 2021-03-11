@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using SqlKata.Execution;
 using OdhApiCore.Filters;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace OdhApiCore.Controllers.api
 {
@@ -24,11 +25,13 @@ namespace OdhApiCore.Controllers.api
     {
         private readonly IWebHostEnvironment env;
         private readonly ISettings settings;
+        private readonly IMemoryCache cache;
 
-        public TestController(IWebHostEnvironment env, ISettings settings)           
+        public TestController(IWebHostEnvironment env, ISettings settings, IMemoryCache memoryCache)           
         {
             this.env = env;
             this.settings = settings;
+            this.cache = memoryCache;
         }
 
         [TypeFilter(typeof(Filters.RequestInterceptorAttribute))]
@@ -88,7 +91,16 @@ namespace OdhApiCore.Controllers.api
         [HttpGet, Route("Cached100")]
         public IEnumerable<string> GetCached100()
         {
-            return new string[] { "value1", "value2", DateTime.Now.ToLongTimeString() };
+            // TODO: generate a key from the request informations
+            var key = "GetCached100";
+            if (!cache.TryGetValue(key, out IEnumerable<string> cacheEntry))
+            {
+                cacheEntry = new string[] { "value1", "value2", DateTime.Now.ToLongTimeString() };
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(100));
+                cache.Set(key, cacheEntry, cacheEntryOptions);
+            }
+            return cacheEntry;
         }
 
         // Cache for 100 seconds on the server, inform the client that response is valid for 100 seconds. Cache for anonymous users only.
