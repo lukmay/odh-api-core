@@ -1,3 +1,5 @@
+using AspNetCore.CacheOutput.Extensions;
+using AspNetCore.CacheOutput.InMemory.Extensions;
 using EasyCaching.Interceptor.AspectCore;
 using Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,13 +68,13 @@ namespace OdhApiCore
             //services.AddDefaultIdentity<IdentityUser>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddMemoryCache();
-
+            //services.AddMemoryCache();
+            services.AddInMemoryCacheOutput();
             //services.AddResponseCaching();
-            services.AddEasyCaching(options =>
-            {
-                options.UseInMemory("m1");
-            });
+            //services.AddEasyCaching(options =>
+            //{
+            //    options.UseInMemory("m1");
+            //});
 
             services.AddHttpClient("mss", client =>
             {
@@ -299,9 +301,9 @@ namespace OdhApiCore
             });
 
             //services.AddHttpContextAccessor();
-            services.ConfigureAspectCoreInterceptor(options => {
-                options.CacheProviderName = "m1";
-            });
+            //services.ConfigureAspectCoreInterceptor(options => {
+            //    options.CacheProviderName = "m1";
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -351,6 +353,8 @@ namespace OdhApiCore
             app.UseAuthorization();
 
             app.UseResponseCompression();
+
+            app.UseCacheOutput();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger(c =>

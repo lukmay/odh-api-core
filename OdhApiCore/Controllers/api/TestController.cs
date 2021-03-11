@@ -16,6 +16,7 @@ using SqlKata.Execution;
 using OdhApiCore.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using EasyCaching.Core.Interceptor;
+using AspNetCore.CacheOutput;
 
 namespace OdhApiCore.Controllers.api
 {
@@ -89,7 +90,9 @@ namespace OdhApiCore.Controllers.api
 
         // Cache for 100 seconds on the server, inform the client that response is valid for 100 seconds
         //[ResponseCache(Duration = 100)]
-        [HttpGet, Route("Cached100"), EasyCachingAble(Expiration = 100)]
+        [CacheOutput(ClientTimeSpan = 100, ServerTimeSpan = 100)]
+        [HttpGet, Route("Cached100")]
+        //[EasyCachingAble(Expiration = 100)]
         public IEnumerable<string> GetCached100()
         {
             //// TODO: generate a key from the request informations
