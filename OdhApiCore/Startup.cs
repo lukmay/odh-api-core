@@ -331,14 +331,14 @@ namespace OdhApiCore
                 //FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "wwwroot")), RequestPath = "/StaticFiles" 
             });
 
-            app.UseResponseCaching();
-
             app.UseRouting();
 
             //app.UseCookiePolicy();
 
             //Important! Register Cors Policz before Using Authentication and Authorization
             app.UseCors("CorsPolicy");
+
+            app.UseResponseCaching();
 
             app.UseAuthentication();
             app.UseAuthorization();
