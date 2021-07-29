@@ -114,7 +114,8 @@ namespace NINJA.Parser
 
             //Console.WriteLine("Parsing: " + ninjaevent.begin_date + " " + ninjaevent.begin_time);
 
-             //Date Info
+            //TODO PARSING FAILS IF format of datetime is not exactly as described
+            //Date Info
             myevent.DateBegin = DateTime.ParseExact(ninjaevent.begin_date + " " + ninjaevent.begin_time, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
             myevent.DateEnd = DateTime.ParseExact(ninjaevent.end_date + " " + ninjaevent.end_time, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
 
