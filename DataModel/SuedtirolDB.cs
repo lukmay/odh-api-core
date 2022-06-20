@@ -3252,6 +3252,7 @@ namespace DataModel
         public string DayRID { get; set; }
 
         public Dictionary<string, EventDateAdditionalInfo> EventDateAdditionalInfo { get; set; }
+        [SwaggerSchema("Opening hours for each period")]
         public ICollection<EventDateAdditionalTime> EventDateAdditionalTime { get; set; }
         public EventDateCalculatedDay EventCalculatedDay { get; set; }
 
